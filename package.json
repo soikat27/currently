@@ -1,8 +1,8 @@
 {
-  "name": "frontend-webpack-template",
+  "name": "currently",
   "version": "1.0.0",
   "private": true,
-  "description": "",
+  "description": "a simple clean weather app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,16 +16,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/soikat27/frontend-webpack-template.git"
+    "url": "git+https://github.com/soikat27/currently.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/soikat27/frontend-webpack-template/issues"
+    "url": "https://github.com/soikat27/currently/issues"
   },
-  "homepage": "https://github.com/soikat27/frontend-webpack-template#readme",
+  "homepage": "https://github.com/soikat27/currently#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "css-loader": "^7.1.4",

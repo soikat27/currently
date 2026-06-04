@@ -22,8 +22,12 @@ export default class Weather {
             sunrise: sun.sunrise,
             sunset: sun.sunset
         };
+        this.precipitation = {
+            precipType: precipitation.precipType,
+            precipProb: precipitation.precipProb,
+            precip: precipitation.precip
+        };
 
-        this.precipitation = precipitation;
         this.condition = condition;
         this.icon = icon;
         this.description = desc;

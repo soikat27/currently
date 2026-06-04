@@ -3,4 +3,5 @@ import "./styles/style.css";
 
 import AppController from "./modules/app-controller.js";
 
-AppController.fetchWeather("chandina");
+const promise = AppController.fetchWeather("gettysburg");
+AppController.processWeatherData(promise);

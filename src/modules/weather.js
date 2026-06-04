@@ -1,6 +1,6 @@
 export default class Weather {
 
-    constructor (location, temperature, atmosphere, wind, sun, precipitation, condition, icon) {
+    constructor (location, temperature, atmosphere, wind, sun, precipitation, condition, icon, desc) {
         this.location = location;
 
         this.temperature = {
@@ -26,5 +26,6 @@ export default class Weather {
         this.precipitation = precipitation;
         this.condition = condition;
         this.icon = icon;
+        this.description = desc;
     }
 }

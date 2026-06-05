@@ -24,7 +24,7 @@
                     <p class="brand__tagline">Weather, currently.</p>
                 </header>
 
-                <form id="search-form-idle" class="search search--idle" action="#" method="get">
+                <form id="search-form-idle" class="search search--idle">
                     <div class="search__field">
                         <input
                             id="location-input-idle"
@@ -36,6 +36,7 @@
                         >
                         <button id="search-btn-idle" class="search__btn" type="submit">Go</button>
                     </div>
+                    <p id="search-error-idle" class="search__error"></p>
                 </form>
                 <p class="app-idle__hint">Search for a city/country to get started.</p>
             </div>
@@ -65,6 +66,7 @@
                             >
                             <button id="search-btn" class="search__btn" type="submit">Go</button>
                         </div>
+                        <p id="search-error-ready" class="search__error">Demo error: couldn’t find that city.</p>
                     </form>
 
                     <div id="unit-toggle" class="unit-toggle">

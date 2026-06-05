@@ -14,191 +14,220 @@
     </div>
 
     <div class="app__shell">
-    <div class="app__layout">
-        <aside class="sidebar glass">
-            <header class="brand">
-                <p class="brand__eyebrow">Forecast app</p>
-                <h1 class="brand__name">
-                    <span class="brand__current">Current</span><span class="brand__dot">·</span><span class="brand__ly">ly</span>
-                </h1>
-                <p class="brand__tagline">Weather, currently.</p>
-            </header>
+        <section id="app-idle" class="app-idle">
+            <div class="app-idle__inner">
+                <header class="brand brand--center">
+                    <p class="brand__eyebrow">Forecast app</p>
+                    <h1 class="brand__name">
+                        <span class="brand__current">Current</span><span class="brand__dot">·</span><span class="brand__ly">ly</span>
+                    </h1>
+                    <p class="brand__tagline">Weather, currently.</p>
+                </header>
 
-            <form id="search-form" class="search" action="#" method="get">
-                <label class="search__label" for="location-input">Location</label>
-                <div class="search__field">
-                    <input
-                        id="location-input"
-                        class="search__input"
-                        type="search"
-                        name="location"
-                        placeholder="City or country"
-                        autocomplete="off"
-                    >
-                    <button id="search-btn" class="search__btn" type="submit">Go</button>
-                </div>
-            </form>
-
-            <div id="unit-toggle" class="unit-toggle">
-                <button type="button" class="unit-toggle__btn" data-unit="c">°C</button>
-                <button type="button" class="unit-toggle__btn unit-toggle__btn--active" data-unit="f">°F</button>
+                <form id="search-form-idle" class="search search--idle" action="#" method="get">
+                    <div class="search__field">
+                        <input
+                            id="location-input-idle"
+                            class="search__input"
+                            type="search"
+                            name="location"
+                            placeholder="Type a city/country"
+                            autocomplete="off"
+                        >
+                        <button id="search-btn-idle" class="search__btn" type="submit">Go</button>
+                    </div>
+                </form>
+                <p class="app-idle__hint">Search for a city/country to get started.</p>
             </div>
-        </aside>
+        </section>
 
-        <main id="content" class="main">
-            <section id="current-weather" class="hero glass">
-                <div class="hero__top">
-                    <div id="icon-current" class="hero__icon icon-placeholder"></div>
-                    <div class="hero__meta">
-                        <p id="location" class="hero__location">Gettysburg, PA</p>
-                        <p id="condition" class="hero__condition">Partly Cloudy</p>
+        <div id="app-ready" class="app-ready hide">
+            <div class="app__layout">
+                <aside class="sidebar glass">
+                    <header class="brand">
+                        <p class="brand__eyebrow">Forecast app</p>
+                        <h1 class="brand__name">
+                            <span class="brand__current">Current</span><span class="brand__dot">·</span><span class="brand__ly">ly</span>
+                        </h1>
+                        <p class="brand__tagline">Weather, currently.</p>
+                    </header>
+
+                    <form id="search-form" class="search">
+                        <label class="search__label" for="location-input">Location</label>
+                        <div class="search__field">
+                            <input
+                                id="location-input"
+                                class="search__input"
+                                type="search"
+                                name="location"
+                                placeholder="City/country"
+                                autocomplete="off"
+                            >
+                            <button id="search-btn" class="search__btn" type="submit">Go</button>
+                        </div>
+                    </form>
+
+                    <div id="unit-toggle" class="unit-toggle">
+                        <button type="button" class="unit-toggle__btn" data-unit="c">°C</button>
+                        <button type="button" class="unit-toggle__btn unit-toggle__btn--active" data-unit="f">°F</button>
                     </div>
-                </div>
+                </aside>
 
-                <p id="temp-current" class="hero__temp">72°</p>
+                <main id="content" class="main">
+                    <section id="current-weather" class="hero glass">
+                        <div class="hero__top">
+                            <div id="icon-current" class="hero__icon icon-placeholder"></div>
+                            <div class="hero__meta">
+                                <p id="location" class="hero__location">Gettysburg, PA</p>
+                                <p id="condition" class="hero__condition">Partly Cloudy</p>
+                            </div>
+                        </div>
 
-                <div class="hero__details">
-                    <p id="temp-feels" class="hero__feels">Feels like 70°</p>
-                    <p id="description" class="hero__desc">Mild afternoon with light breeze.</p>
-                    <div class="hero__range">
-                        <span class="hero__range-item">
-                            <span class="hero__range-label">Low</span>
-                            <span id="temp-min" class="hero__range-value">58°</span>
-                        </span>
-                        <span class="hero__range-item">
-                            <span class="hero__range-label">High</span>
-                            <span id="temp-max" class="hero__range-value">78°</span>
-                        </span>
-                    </div>
-                </div>
-            </section>
+                        <p id="temp-current" class="hero__temp">72°</p>
 
-            <section id="metrics" class="metrics">
-                <h2 id="metrics-heading" class="section-title">At a glance</h2>
-                <div class="metrics__rows">
-                    <div class="metrics__row metrics__row--primary">
-                        <article class="metric glass">
-                            <h3 class="metric__label">Humidity</h3>
-                            <p id="humidity" class="metric__value">62%</p>
-                        </article>
-                        <article class="metric glass">
-                            <h3 class="metric__label">Pressure</h3>
-                            <p id="pressure" class="metric__value">1012 mb</p>
-                        </article>
-                        <article class="metric glass">
-                            <h3 class="metric__label">UV Index</h3>
-                            <p id="uv-index" class="metric__value">4.2</p>
-                        </article>
-                        <article class="metric glass">
-                            <h3 class="metric__label">Wind</h3>
-                            <p id="wind-speed" class="metric__value">12 mph</p>
-                        </article>
-                        <article class="metric glass">
-                            <h3 class="metric__label">Gust</h3>
-                            <p id="wind-gust" class="metric__value">18 mph</p>
-                        </article>
-                    </div>
-                    <div class="metrics__row metrics__row--secondary">
-                        <article class="metric glass">
-                            <h3 class="metric__label">Sunrise</h3>
-                            <p id="sunrise" class="metric__value">06:12</p>
-                        </article>
-                        <article class="metric glass">
-                            <h3 class="metric__label">Sunset</h3>
-                            <p id="sunset" class="metric__value">20:04</p>
-                        </article>
-                        <article class="metric glass">
-                            <h3 class="metric__label">Precipitation</h3>
-                            <p class="metric__value">
-                                <span id="precip-prob">18%</span> chance ·
-                                <span id="precip-amount">0.02</span> in ·
-                                <span id="precip-type">rain</span>
-                            </p>
-                        </article>
-                    </div>
-                </div>
-            </section>
+                        <div class="hero__details">
+                            <p id="temp-feels" class="hero__feels">Feels like 70°</p>
+                            <p id="description" class="hero__desc">Mild afternoon with light breeze.</p>
+                            <div class="hero__range">
+                                <span class="hero__range-item">
+                                    <span class="hero__range-label">Low</span>
+                                    <span id="temp-min" class="hero__range-value">58°</span>
+                                </span>
+                                <span class="hero__range-item">
+                                    <span class="hero__range-label">High</span>
+                                    <span id="temp-max" class="hero__range-value">78°</span>
+                                </span>
+                            </div>
+                        </div>
+                    </section>
 
-            <section id="weekly-forecast" class="weekly">
-                <h2 id="weekly-heading" class="section-title">This week</h2>
-                <div class="weekly__grid">
-                    <article class="day-card glass">
-                        <p class="day-card__label">Mon</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">78°</span>
-                            <span class="day-card__low">61°</span>
-                        </p>
-                        <p class="day-card__condition">Partly cloudy</p>
-                    </article>
-                    <article class="day-card glass">
-                        <p class="day-card__label">Tue</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">80°</span>
-                            <span class="day-card__low">63°</span>
-                        </p>
-                        <p class="day-card__condition">Mostly sunny</p>
-                    </article>
-                    <article class="day-card glass">
-                        <p class="day-card__label">Wed</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">76°</span>
-                            <span class="day-card__low">60°</span>
-                        </p>
-                        <p class="day-card__condition">Showers</p>
-                    </article>
-                    <article class="day-card glass">
-                        <p class="day-card__label">Thu</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">72°</span>
-                            <span class="day-card__low">58°</span>
-                        </p>
-                        <p class="day-card__condition">Rain</p>
-                    </article>
-                    <article class="day-card glass">
-                        <p class="day-card__label">Fri</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">74°</span>
-                            <span class="day-card__low">59°</span>
-                        </p>
-                        <p class="day-card__condition">Clearing</p>
-                    </article>
-                    <article class="day-card glass">
-                        <p class="day-card__label">Sat</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">79°</span>
-                            <span class="day-card__low">62°</span>
-                        </p>
-                        <p class="day-card__condition">Sunny</p>
-                    </article>
-                    <article class="day-card glass">
-                        <p class="day-card__label">Sun</p>
-                        <div class="day-card__icon icon-placeholder"></div>
-                        <p class="day-card__temps">
-                            <span class="day-card__high">81°</span>
-                            <span class="day-card__low">64°</span>
-                        </p>
-                        <p class="day-card__condition">Hot &amp; humid</p>
-                    </article>
-                </div>
-            </section>
-        </main>
-    </div>
+                    <section id="metrics" class="metrics">
+                        <h2 id="metrics-heading" class="section-title">At a glance</h2>
+                        <div class="metrics__rows">
+                            <div class="metrics__row metrics__row--primary">
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Humidity</h3>
+                                    <p id="humidity" class="metric__value">62%</p>
+                                </article>
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Pressure</h3>
+                                    <p id="pressure" class="metric__value">1012 mb</p>
+                                </article>
+                                <article class="metric glass">
+                                    <h3 class="metric__label">UV Index</h3>
+                                    <p id="uv-index" class="metric__value">4.2</p>
+                                </article>
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Wind</h3>
+                                    <p id="wind-speed" class="metric__value">12 mph</p>
+                                </article>
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Gust</h3>
+                                    <p id="wind-gust" class="metric__value">18 mph</p>
+                                </article>
+                            </div>
+                            <div class="metrics__row metrics__row--secondary">
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Sunrise</h3>
+                                    <p id="sunrise" class="metric__value">06:12</p>
+                                </article>
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Sunset</h3>
+                                    <p id="sunset" class="metric__value">20:04</p>
+                                </article>
+                                <article class="metric glass">
+                                    <h3 class="metric__label">Precipitation</h3>
+                                    <p class="metric__value">
+                                        <span id="precip-prob">18%</span> chance ·
+                                        <span id="precip-amount">0.02</span> in ·
+                                        <span id="precip-type">rain</span>
+                                    </p>
+                                </article>
+                            </div>
+                        </div>
+                    </section>
 
-    <footer class="site-footer glass">
-        <p class="site-footer__copy">© 2026 Soikat Saha</p>
-        <a
-            class="site-footer__link"
-            href="https://github.com/soikat27/currently"
-            target="_blank"
-            rel="noopener noreferrer"
-        >GitHub</a>
-    </footer>
+                    <section id="weekly-forecast" class="weekly">
+                        <h2 id="weekly-heading" class="section-title">This week</h2>
+                        <div class="weekly__grid">
+                            <article class="day-card glass">
+                                <p class="day-card__label">Mon</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">78°</span>
+                                    <span class="day-card__low">61°</span>
+                                </p>
+                                <p class="day-card__condition">Partly cloudy</p>
+                            </article>
+                            <article class="day-card glass">
+                                <p class="day-card__label">Tue</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">80°</span>
+                                    <span class="day-card__low">63°</span>
+                                </p>
+                                <p class="day-card__condition">Mostly sunny</p>
+                            </article>
+                            <article class="day-card glass">
+                                <p class="day-card__label">Wed</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">76°</span>
+                                    <span class="day-card__low">60°</span>
+                                </p>
+                                <p class="day-card__condition">Showers</p>
+                            </article>
+                            <article class="day-card glass">
+                                <p class="day-card__label">Thu</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">72°</span>
+                                    <span class="day-card__low">58°</span>
+                                </p>
+                                <p class="day-card__condition">Rain</p>
+                            </article>
+                            <article class="day-card glass">
+                                <p class="day-card__label">Fri</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">74°</span>
+                                    <span class="day-card__low">59°</span>
+                                </p>
+                                <p class="day-card__condition">Clearing</p>
+                            </article>
+                            <article class="day-card glass">
+                                <p class="day-card__label">Sat</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">79°</span>
+                                    <span class="day-card__low">62°</span>
+                                </p>
+                                <p class="day-card__condition">Sunny</p>
+                            </article>
+                            <article class="day-card glass">
+                                <p class="day-card__label">Sun</p>
+                                <div class="day-card__icon icon-placeholder"></div>
+                                <p class="day-card__temps">
+                                    <span class="day-card__high">81°</span>
+                                    <span class="day-card__low">64°</span>
+                                </p>
+                                <p class="day-card__condition">Hot &amp; humid</p>
+                            </article>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+
+        <footer class="site-footer glass">
+            <p class="site-footer__copy">© 2026 Soikat Saha</p>
+            <a
+                class="site-footer__link"
+                href="https://github.com/soikat27/currently"
+                target="_blank"
+                rel="noopener noreferrer"
+            >GitHub</a>
+        </footer>
     </div>
 </body>
 </html>

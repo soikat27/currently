@@ -42,6 +42,7 @@ html {
 
 body.app {
   min-height: 100vh;
+  overflow-x: hidden;
   font-family: var(--font-ui);
   font-size: 0.9375rem;
   color: var(--text-primary);
@@ -58,6 +59,12 @@ body.app {
     ),
     linear-gradient(165deg, var(--bg-base) 0%, var(--bg-accent) 100%);
   transition: background-color var(--transition), color var(--transition);
+}
+
+/* --- Utilities --- */
+
+.hide {
+  display: none !important;
 }
 
 /* --- Glass utility --- */
@@ -83,6 +90,7 @@ body.app {
   z-index: 1;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   width: min(100%, 1600px);
   max-width: 1600px;
   min-height: 100vh;
@@ -91,8 +99,50 @@ body.app {
   gap: var(--space-lg);
 }
 
-.app__layout {
+/* --- Idle / ready views --- */
+
+.app-idle {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: min(10vh, 5rem);
+  width: 100%;
+  min-height: 0;
+}
+
+.app-idle__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 40rem;
+  padding: 0 var(--space-sm);
+}
+
+.app-idle__hint {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.app-ready {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+.brand--center {
+  text-align: center;
+}
+
+.search--idle {
+  width: 100%;
+  margin-top: var(--space-2xl);
+}
+
+.app__layout {
   display: grid;
   grid-template-columns: minmax(340px, 440px) minmax(0, 1fr);
   gap: var(--space-xl);

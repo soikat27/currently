@@ -59,7 +59,7 @@ const appController = (() => {
         console.log(currentWeather);
     }
 
-    return {fetchWeather, processWeatherData};
+    return {fetchWeather, processWeatherData, currentWeather};
 })();
 
 export default appController;

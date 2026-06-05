@@ -2,8 +2,11 @@ import Weather from "./weather.js"
 
 const appController = (() => {
     const API_KEY = "3MJPHZNPHSSEU77B7SWV5NUMW";
-    const defaultWeather = null;
-    let currentWeather = defaultWeather;
+    let currentWeather = null;
+
+    function getCurrentWeather() {
+        return currentWeather;
+    }
 
     async function fetchWeather(location) {
         const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${API_KEY}`;
@@ -13,7 +16,6 @@ const appController = (() => {
                 throw new Error ("weather-fetch failed!");
 
             const data = await response.json();
-            console.log(data);
             return data;
         }
         catch (error) {
@@ -21,9 +23,7 @@ const appController = (() => {
         }
     }
 
-    async function processWeatherData(weatherData) {
-        const data = await weatherData;
-
+    function processWeatherData(data) {
         const location = data.resolvedAddress;
         const temperature = {
             current: data.currentConditions.temp,
@@ -59,7 +59,7 @@ const appController = (() => {
         console.log(currentWeather);
     }
 
-    return {fetchWeather, processWeatherData, currentWeather};
+    return {fetchWeather, processWeatherData, getCurrentWeather};
 })();
 
 export default appController;

@@ -1,7 +1,7 @@
 import AppController from "./app-controller.js"
 
 const uiController = (() => {
-    function fetchWeather(event) {
+    async function fetchWeather(event) {
         event.preventDefault();
 
         const form = event.currentTarget;
@@ -13,14 +13,23 @@ const uiController = (() => {
         }
         
         const location = document.getElementById("location-input-idle").value;
-        // try {
-        //     const data = AppController.fetchWeather(location);
-        //     const weather = AppController.processWeatherData(data);
-        // }
-        // catch(error) {
+        try {
+            const data = await AppController.fetchWeather(location);
+            AppController.processWeatherData(data);
+            const weather = AppController.getCurrentWeather();
 
-        // }
+            if (weather) {
+                developMainSection(weather);
 
+                showReadyView();
+            }
+        }
+        catch(error) {
+            console.log(error);
+        }
+        finally {
+            form.reset();
+        }
     }
 
     function showIdleView() {
@@ -37,9 +46,23 @@ const uiController = (() => {
         readySection.classList.remove("hide");
     }
 
-    // function developMainSection() {
+    function developMainSection(weather) {
+        const temperature = document.getElementById("temp-current");
+        const location = document.getElementById("location");
+        const condition = document.getElementById("condition");
+        const feelsLike = document.getElementById("temp-feels");
+        const description = document.getElementById("description");
+        const tempMin = document.getElementById("temp-min");
+        const tempMax = document.getElementById("temp-max");
 
-    // }
+        temperature.textContent = `${weather.temperature.current}°`;
+        location.textContent = weather.location;
+        condition.textContent = weather.condition;
+        feelsLike.textContent = `Feels like ${weather.temperature.feelsLike}°`;
+        description.textContent = weather.description;
+        tempMin.textContent = `${weather.temperature.min}°`;
+        tempMax.textContent = `${weather.temperature.max}°`;
+    }
 
     function validateLocationIdle() {
         // 1. reset custom validity
@@ -63,9 +86,10 @@ const uiController = (() => {
 
     function initApp() {
         setEventListeners();
+        showIdleView();
     }
 
-    return {initApp};
+    return {initApp, showReadyView};
 })();
 
 export default uiController;

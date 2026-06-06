@@ -20,6 +20,7 @@ const uiController = (() => {
 
             if (weather) {
                 developMainSection(weather);
+                developMetricsSection(weather);
 
                 showReadyView();
             }
@@ -62,6 +63,32 @@ const uiController = (() => {
         description.textContent = weather.description;
         tempMin.textContent = `${weather.temperature.min}°`;
         tempMax.textContent = `${weather.temperature.max}°`;
+    }
+
+    function developMetricsSection(weather) {
+        const humidity = document.getElementById("humidity");
+        const pressure = document.getElementById("pressure");
+        const uvIndex = document.getElementById("uv-index");
+        const wind = document.getElementById("wind-speed");
+        const gust = document.getElementById("wind-gust");
+        const sunrise = document.getElementById("sunrise");
+        const sunset = document.getElementById("sunset");
+
+        humidity.textContent = `${weather.atmosphere.humidity}%`;
+        pressure.textContent = `${weather.atmosphere.pressure} mb`;
+        uvIndex.textContent = weather.atmosphere.uvIndex;
+        wind.textContent = `${weather.wind.speed} mph`;
+        gust.textContent = `${(weather.wind.gust === null) ? "-" : weather.wind.gust + " mph"}`;
+        sunrise.textContent = weather.sun.sunrise;
+        sunset.textContent = weather.sun.sunset;
+
+        const precipType = document.getElementById("precip-type");
+        const precipProb = document.getElementById("precip-prob");
+        const precipAmount = document.getElementById("precip-amount");
+
+        precipType.textContent = `${(!weather.precipitation.precipType || weather.precipitation.precipType.length === 0) ? "no precipitation" : weather.precipitation.precipType.join(" & ")}`;
+        precipProb.textContent = `${weather.precipitation.precipProb}%`;
+        precipAmount.textContent = `${(weather.precipitation.precip === null) ? "0" : Math.round(weather.precipitation.precip * 100) / 100}`;
     }
 
     function validateLocationIdle() {

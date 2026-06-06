@@ -10,17 +10,13 @@ const appController = (() => {
 
     async function fetchWeather(location) {
         const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${API_KEY}`;
-        try {
-            const response = await fetch(url);
-            if (!response.ok)
-                throw new Error ("weather-fetch failed!");
+            
+        const response = await fetch(url);
+        if (!response.ok)
+            throw new Error ("Bad input: weather-fetch failed!");
 
-            const data = await response.json();
-            return data;
-        }
-        catch (error) {
-            console.log(error);
-        }
+        const data = await response.json();
+        return data;
     }
 
     function processWeatherData(data) {

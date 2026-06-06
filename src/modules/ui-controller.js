@@ -26,7 +26,11 @@ const uiController = (() => {
             }
         }
         catch(error) {
-            console.log(error);
+            const errorMessageDiv = document.getElementById("search-error-idle");
+            if (error.message === "Bad input: weather-fetch failed!")
+                errorMessageDiv.textContent = "Bad input: weather-fetch failed! Please try a valid location input.";
+            else
+                errorMessageDiv.textContent = "Network error! Please try another time."
         }
         finally {
             form.reset();

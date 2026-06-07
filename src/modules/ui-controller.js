@@ -10,7 +10,7 @@ const uiController = (() => {
             const weather = AppController.getCurrentWeather();
 
             if (weather) {
-                displayWeather(weather);
+                await displayWeather(weather);
                 showReadyView();
             }
         }
@@ -73,7 +73,7 @@ const uiController = (() => {
         readySection.classList.remove("hide");
     }
 
-    function developMainSection(weather) {
+    async function developMainSection(weather) {
         const temperature = document.getElementById("temp-current");
         const location = document.getElementById("location");
         const condition = document.getElementById("condition");
@@ -90,6 +90,14 @@ const uiController = (() => {
         description.textContent = weather.description;
         tempMin.textContent = `${(currentUnit === "C") ? AppController.convertToCelcius(weather.temperature.min) : weather.temperature.min}°`;
         tempMax.textContent = `${(currentUnit === "C") ? AppController.convertToCelcius(weather.temperature.max) : weather.temperature.max}°`;
+    }
+
+    async function loadIcon(weather) {
+        const iconElement = document.getElementById("icon-current");
+        const icon = await import(`../assets/weather-icons/${weather.icon}.svg`);
+
+        iconElement.src = icon.default;
+        iconElement.alt = weather.icon;
     }
 
     function developMetricsSection(weather) {
@@ -118,11 +126,10 @@ const uiController = (() => {
         precipAmount.textContent = `${(weather.precipitation.precip === null) ? "0" : Math.round(weather.precipitation.precip * 100) / 100}`;
     }
 
-    function displayWeather(weather) {
+    async function displayWeather(weather) {
         developMainSection(weather);
+        await loadIcon(weather);
         developMetricsSection(weather);
-
-
     }
 
     function validateLocation(searchBar) {
@@ -163,7 +170,8 @@ const uiController = (() => {
 
             AppController.setCelcius();
             const weather = AppController.getCurrentWeather();
-            displayWeather(weather);
+            if (weather)
+                displayWeather(weather);
         });
         unitBtnF.addEventListener("click", () => {
             if (AppController.getCurrentUnit() === "F")
@@ -174,7 +182,8 @@ const uiController = (() => {
 
             AppController.setFarenhite();
             const weather = AppController.getCurrentWeather();
-            displayWeather(weather);
+            if (weather)
+                displayWeather(weather);
         });
     }
 

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkcurrently=self.webpackChunkcurrently||[]).push([[228],{228(e,s,c){e.exports=c.p+"assets/028e48cb6e062a0252c3.svg"}}]);

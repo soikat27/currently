@@ -4,4 +4,5 @@ import "./styles/style.css";
 
 import UiController from "./modules/ui-controller.js";
 
+// render the application
 UiController.initApp();

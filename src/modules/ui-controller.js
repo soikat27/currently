@@ -133,8 +133,12 @@ const uiController = (() => {
     async function developWeeklyForcast() {
         const weeklyForcast = AppController.getWeeklyForcast();
         const weeklyGrid = document.querySelector(".weekly__grid");
+        const currentUnit = AppController.getCurrentUnit();
+
+        // clear div
         weeklyGrid.innerHTML = "";
 
+        // render
         for (const miniWeather of weeklyForcast) {
             const icon = await import(`../assets/weather-icons/${miniWeather.icon}.svg`);
             const html = `<article class="day-card glass">
@@ -143,8 +147,8 @@ const uiController = (() => {
                                 <img src="${icon.default}" alt="${miniWeather.icon}">
                             </div>
                             <p class="day-card__temps">
-                                <span class="day-card__high">${miniWeather.tempMax}°</span>
-                                <span class="day-card__low">${miniWeather.tempMin}°</span>
+                                <span class="day-card__high">${(currentUnit === "C") ? AppController.convertToCelcius(miniWeather.tempMax) : miniWeather.tempMax}°</span>
+                                <span class="day-card__low">${(currentUnit === "C") ? AppController.convertToCelcius(miniWeather.tempMin) : miniWeather.tempMin}°</span>
                             </p>
                             <p class="day-card__condition">${miniWeather.condition}</p>
                         </article>`;
@@ -220,7 +224,7 @@ const uiController = (() => {
         showIdleView();
     }
 
-    return {initApp, showReadyView};
+    return {initApp};
 })();
 
 export default uiController;

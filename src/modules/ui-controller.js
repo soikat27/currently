@@ -1,4 +1,5 @@
 import AppController from "./app-controller.js"
+import MiniWeather from "./mini-weather.js";
 
 const uiController = (() => {
     async function fetchWeather(form, location, errorMessageDiv) {
@@ -125,6 +126,26 @@ const uiController = (() => {
         precipProb.textContent = `${weather.precipitation.precipProb}%`;
         precipAmount.textContent = `${(weather.precipitation.precip === null) ? "0" : Math.round(weather.precipitation.precip * 100) / 100}`;
     }
+
+    // function developWeeklyForcast() {
+    //     const weeklyForcast = AppController.getWeeklyForcast();
+
+    //     weeklyForcast.forEach((miniWeather) => {
+    //         const html = `<article class="day-card glass">
+    //                         <p class="day-card__label">${}</p>
+    //                         <div class="day-card__icon">
+    //                             <img alt="">
+    //                         </div>
+    //                         <p class="day-card__temps">
+    //                             <span class="day-card__high">78°</span>
+    //                             <span class="day-card__low">61°</span>
+    //                         </p>
+    //                         <p class="day-card__condition">Partly cloudy</p>
+    //                     </article>`;
+    //     });
+        
+
+    // }
 
     async function displayWeather(weather) {
         developMainSection(weather);

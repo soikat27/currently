@@ -1,7 +1,6 @@
 import {parse, format} from "date-fns";
 
 export default class Weather {
-
     constructor (location, temperature, atmosphere, wind, sun, precipitation, condition, icon, desc) {
         this.location = location.charAt(0).toUpperCase() + location.slice(1);
         this.temperature = {

@@ -7,7 +7,7 @@ const appController = (() => {
     const API_KEY = "3MJPHZNPHSSEU77B7SWV5NUMW";
     let currentWeather = null;
     let currentUnit = "F";
-    const weeklyForcast = [];
+    let weeklyForcast = [];
 
     function getCurrentWeather() {
         return currentWeather;
@@ -79,6 +79,9 @@ const appController = (() => {
     }
 
     function fetchWeeklyForcast(data) {
+        // clear prev. weeklyForcast
+        weeklyForcast = [];
+        
         for (let i = 1; i <= 7; i++) {
             let day;
             if (i === 1)
@@ -91,7 +94,8 @@ const appController = (() => {
             const tempMin = data.days[i].tempmin;
             const tempMax = data.days[i].tempmax;
             const icon = data.days[i].icon;
-            const miniWeather = new MiniWeather(day, tempMin, tempMax, icon);
+            const condition = data.days[i].conditions;
+            const miniWeather = new MiniWeather(day, tempMin, tempMax, icon, condition);
 
             weeklyForcast.push(miniWeather);
         }

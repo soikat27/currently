@@ -1,15 +1,16 @@
 import AppController from "./app-controller.js"
-import MiniWeather from "./mini-weather.js";
 
 const uiController = (() => {
     async function fetchWeather(form, location, errorMessageDiv) {
         // clear previous error message
         errorMessageDiv.textContent = "";
+        // show loading ui
+        document.getElementById("loading").classList.remove("loading--hidden");
         try {
             const data = await AppController.fetchWeather(location);
             AppController.processWeatherData(data);
             const weather = AppController.getCurrentWeather();
-
+            await AppController.fetchWeeklyForcast(data);
             if (weather) {
                 await displayWeather(weather);
                 showReadyView();
@@ -23,6 +24,8 @@ const uiController = (() => {
         }
         finally {
             form.reset();
+            // hide loading
+            document.getElementById("loading").classList.add("loading--hidden");
         }
     }
 
@@ -127,30 +130,34 @@ const uiController = (() => {
         precipAmount.textContent = `${(weather.precipitation.precip === null) ? "0" : Math.round(weather.precipitation.precip * 100) / 100}`;
     }
 
-    // function developWeeklyForcast() {
-    //     const weeklyForcast = AppController.getWeeklyForcast();
+    async function developWeeklyForcast() {
+        const weeklyForcast = AppController.getWeeklyForcast();
+        const weeklyGrid = document.querySelector(".weekly__grid");
+        weeklyGrid.innerHTML = "";
 
-    //     weeklyForcast.forEach((miniWeather) => {
-    //         const html = `<article class="day-card glass">
-    //                         <p class="day-card__label">${}</p>
-    //                         <div class="day-card__icon">
-    //                             <img alt="">
-    //                         </div>
-    //                         <p class="day-card__temps">
-    //                             <span class="day-card__high">78°</span>
-    //                             <span class="day-card__low">61°</span>
-    //                         </p>
-    //                         <p class="day-card__condition">Partly cloudy</p>
-    //                     </article>`;
-    //     });
-        
+        for (const miniWeather of weeklyForcast) {
+            const icon = await import(`../assets/weather-icons/${miniWeather.icon}.svg`);
+            const html = `<article class="day-card glass">
+                            <p class="day-card__label">${miniWeather.day}</p>
+                            <div class="day-card__icon">
+                                <img src="${icon.default}" alt="${miniWeather.icon}">
+                            </div>
+                            <p class="day-card__temps">
+                                <span class="day-card__high">${miniWeather.tempMax}°</span>
+                                <span class="day-card__low">${miniWeather.tempMin}°</span>
+                            </p>
+                            <p class="day-card__condition">${miniWeather.condition}</p>
+                        </article>`;
 
-    // }
+            weeklyGrid.insertAdjacentHTML("beforeend", html);
+        }
+    }
 
     async function displayWeather(weather) {
         developMainSection(weather);
         await loadIcon(weather);
         developMetricsSection(weather);
+        await developWeeklyForcast();
     }
 
     function validateLocation(searchBar) {

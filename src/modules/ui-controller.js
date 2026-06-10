@@ -9,8 +9,9 @@ const uiController = (() => {
         try {
             const data = await AppController.fetchWeather(location);
             AppController.processWeatherData(data);
+            await AppController.processWeeklyForcast(data);
+            
             const weather = AppController.getCurrentWeather();
-            await AppController.fetchWeeklyForcast(data);
             if (weather) {
                 await displayWeather(weather);
                 showReadyView();

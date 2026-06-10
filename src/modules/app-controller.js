@@ -25,7 +25,6 @@ const appController = (() => {
     }
 
     function processWeatherData(data) {
-        console.log(data);
         const location = data.resolvedAddress;
         const temperature = {
             current: data.currentConditions.temp,
@@ -58,7 +57,6 @@ const appController = (() => {
 
         const weather = new Weather(location, temperature, atmosphere, wind, sun, precipitation, condition, icon, desc);
         currentWeather = weather;
-        console.log(currentWeather);
     }
 
     function convertToCelcius(temperature) {
@@ -78,7 +76,7 @@ const appController = (() => {
         currentUnit = "F";
     }
 
-    function fetchWeeklyForcast(data) {
+    function processWeeklyForcast(data) {
         // clear prev. weeklyForcast
         weeklyForcast = [];
         
@@ -105,7 +103,7 @@ const appController = (() => {
         return [...weeklyForcast];
     }
 
-    return {fetchWeather, processWeatherData, getCurrentWeather, convertToCelcius, getCurrentUnit, setCelcius, setFarenhite, fetchWeeklyForcast, getWeeklyForcast};
+    return {fetchWeather, processWeatherData, getCurrentWeather, convertToCelcius, getCurrentUnit, setCelcius, setFarenhite, processWeeklyForcast, getWeeklyForcast};
 })();
 
 export default appController;

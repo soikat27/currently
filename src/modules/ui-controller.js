@@ -1,15 +1,25 @@
 import AppController from "./app-controller.js"
 
+/**
+ * Wires forms, loading overlay, view toggles, and DOM rendering.
+ * Calls AppController for data; never fetches the API directly.
+ */
 const uiController = (() => {
+
+    /**
+     * Fetch weather for a location, process data, render, and switch to ready view.
+     * @param {HTMLFormElement} form - submitted search form
+     * @param {string} location - city or country string
+     * @param {HTMLElement} errorMessageDiv - inline error element for this form
+     * @returns {Promise<void>}
+     */
     async function fetchWeather(form, location, errorMessageDiv) {
-        // clear previous error message
         errorMessageDiv.textContent = "";
-        // show loading ui
         document.getElementById("loading").classList.remove("loading--hidden");
         try {
             const data = await AppController.fetchWeather(location);
             AppController.processWeatherData(data);
-            await AppController.processWeeklyForcast(data);
+            AppController.processWeeklyForcast(data);
             
             const weather = AppController.getCurrentWeather();
             if (weather) {
@@ -25,16 +35,15 @@ const uiController = (() => {
         }
         finally {
             form.reset();
-            // hide loading
             document.getElementById("loading").classList.add("loading--hidden");
         }
     }
 
+    /** @param {SubmitEvent} event */
     function idleFormHandler(event) {
         event.preventDefault();
 
         const form = event.currentTarget;
-        // validate form-fields
         const searchBar = document.getElementById("location-input-idle");
         validateLocation(searchBar);
         if (!form.checkValidity()) {
@@ -47,11 +56,11 @@ const uiController = (() => {
         fetchWeather(form, location, errorMessageDiv);
     }
 
+    /** @param {SubmitEvent} event */
     function readyFormHandler(event) {
         event.preventDefault();
         
         const form = event.currentTarget;
-        // validate form-fields
         const searchBar = document.getElementById("location-input");
         validateLocation(searchBar);
         if (!form.checkValidity()) {
@@ -78,7 +87,11 @@ const uiController = (() => {
         readySection.classList.remove("hide");
     }
 
-    async function developMainSection(weather) {
+    /**
+     * Render hero temps, location, condition, and description.
+     * @param {import("./weather.js").default} weather
+     */
+    function developMainSection(weather) {
         const temperature = document.getElementById("temp-current");
         const location = document.getElementById("location");
         const condition = document.getElementById("condition");
@@ -97,14 +110,30 @@ const uiController = (() => {
         tempMax.textContent = `${(currentUnit === "C") ? AppController.convertToCelcius(weather.temperature.max) : weather.temperature.max}°`;
     }
 
+    /**
+     * Load hero weather icon from bundled SVG assets.
+     * Fails silently if the icon file is missing.
+     * @param {import("./weather.js").default} weather
+     * @returns {Promise<void>}
+     */
     async function loadIcon(weather) {
         const iconElement = document.getElementById("icon-current");
-        const icon = await import(`../assets/weather-icons/${weather.icon}.svg`);
-
-        iconElement.src = icon.default;
-        iconElement.alt = weather.icon;
+        try {
+            const icon = await import(`../assets/weather-icons/${weather.icon}.svg`);
+            iconElement.src = icon.default;  
+        }
+        catch {
+            iconElement.removeAttribute("src");
+        }
+        finally {
+            iconElement.alt = weather.icon;
+        }
     }
 
+    /**
+     * Render humidity, wind, sun, and precipitation metrics.
+     * @param {import("./weather.js").default} weather
+     */
     function developMetricsSection(weather) {
         const humidity = document.getElementById("humidity");
         const pressure = document.getElementById("pressure");
@@ -131,21 +160,31 @@ const uiController = (() => {
         precipAmount.textContent = `${(weather.precipitation.precip === null) ? "0" : Math.round(weather.precipitation.precip * 100) / 100}`;
     }
 
+    /**
+     * Clear and rebuild the 7-day forecast grid from MiniWeather data.
+     * @returns {Promise<void>}
+     */
     async function developWeeklyForcast() {
         const weeklyForcast = AppController.getWeeklyForcast();
         const weeklyGrid = document.querySelector(".weekly__grid");
         const currentUnit = AppController.getCurrentUnit();
 
-        // clear div
         weeklyGrid.innerHTML = "";
 
-        // render
         for (const miniWeather of weeklyForcast) {
-            const icon = await import(`../assets/weather-icons/${miniWeather.icon}.svg`);
+            let iconSrc = "";
+            try {
+                const icon = await import(`../assets/weather-icons/${miniWeather.icon}.svg`);
+                iconSrc = icon.default;
+            }
+            catch {
+                // missing icon file — card still renders without image
+            }
+
             const html = `<article class="day-card glass">
                             <p class="day-card__label">${miniWeather.day}</p>
                             <div class="day-card__icon">
-                                <img src="${icon.default}" alt="${miniWeather.icon}">
+                                <img ${iconSrc ? `src="${iconSrc}"` : ""} alt="${miniWeather.icon}">
                             </div>
                             <p class="day-card__temps">
                                 <span class="day-card__high">${(currentUnit === "C") ? AppController.convertToCelcius(miniWeather.tempMax) : miniWeather.tempMax}°</span>
@@ -158,6 +197,11 @@ const uiController = (() => {
         }
     }
 
+    /**
+     * Render all ready-view weather sections.
+     * @param {import("./weather.js").default} weather
+     * @returns {Promise<void>}
+     */
     async function displayWeather(weather) {
         developMainSection(weather);
         await loadIcon(weather);
@@ -165,17 +209,18 @@ const uiController = (() => {
         await developWeeklyForcast();
     }
 
+    /**
+     * Set custom validity on empty location input.
+     * @param {HTMLInputElement} searchBar
+     */
     function validateLocation(searchBar) {
-        // 1. reset custom validity
         searchBar.setCustomValidity("");
 
-        // 2. check validity and set custom validity
         if (!searchBar.value.trim())
             searchBar.setCustomValidity("Location can't be empty!");
     }
     
     function setEventListeners() {
-        // idle view: searchbar, custom validity 
         const idleForm = document.getElementById("search-form-idle");
         idleForm.addEventListener("submit", idleFormHandler);
         const idleSearchBar = document.getElementById("location-input-idle");
@@ -183,7 +228,6 @@ const uiController = (() => {
             validateLocation(idleSearchBar);
         });
 
-        // ready view: searchbar, custom validity
         const readyForm = document.getElementById("search-form");
         readyForm.addEventListener("submit", readyFormHandler);
         const readySearchBar = document.getElementById("location-input");
@@ -191,7 +235,6 @@ const uiController = (() => {
             validateLocation(readySearchBar);
         });
 
-        // unit-btn handlers
         const unitBtnC = document.getElementById("unit-C");
         const unitBtnF = document.getElementById("unit-F");
         unitBtnC.addEventListener("click", () => {
@@ -220,6 +263,7 @@ const uiController = (() => {
         });
     }
 
+    /** Wire listeners and show the idle landing view. */
     function initApp() {
         setEventListeners();
         showIdleView();

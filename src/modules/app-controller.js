@@ -3,16 +3,25 @@ import { parseISO, format} from "date-fns";
 import Weather from "./weather.js";
 import MiniWeather from "./mini-weather.js";
 
+/**
+ * Fetches weather from Visual Crossing, maps API JSON into model instances,
+ * and stores current weather, weekly forecast, and unit preference.
+ */
 const appController = (() => {
     const API_KEY = "3MJPHZNPHSSEU77B7SWV5NUMW";
     let currentWeather = null;
     let currentUnit = "F";
     let weeklyForcast = [];
 
+    /** @returns {Weather|null} */
     function getCurrentWeather() {
         return currentWeather;
     }
 
+    /**
+     * @param {string} location - city or country search string
+     * @returns {Promise<object>} raw Visual Crossing timeline JSON
+     */
     async function fetchWeather(location) {
         const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${API_KEY}`;
             
@@ -24,6 +33,10 @@ const appController = (() => {
         return data;
     }
 
+    /**
+     * Map API JSON into a Weather instance for the current dashboard.
+     * @param {object} data - raw Visual Crossing timeline response
+     */
     function processWeatherData(data) {
         const location = data.resolvedAddress;
         const temperature = {
@@ -59,11 +72,17 @@ const appController = (() => {
         currentWeather = weather;
     }
 
+    /**
+     * Convert °F to °C for display.
+     * @param {number} temperature - value in Fahrenheit
+     * @returns {number}
+     */
     function convertToCelcius(temperature) {
         const celcius = ((temperature-32)*5)/9;
         return Math.round(celcius*10)/10; 
     }
 
+    /** @returns {"C"|"F"} */
     function getCurrentUnit() {
         return currentUnit;
     }
@@ -76,29 +95,39 @@ const appController = (() => {
         currentUnit = "F";
     }
 
+    /**
+     * Build MiniWeather entries from days[1]–days[7] (tomorrow onward).
+     * Skips missing days if the API returns a shorter timeline.
+     * @param {object} data - raw Visual Crossing timeline response
+     */
     function processWeeklyForcast(data) {
-        // clear prev. weeklyForcast
         weeklyForcast = [];
-        
+
         for (let i = 1; i <= 7; i++) {
+            const dayData = data.days[i];
+            if (!dayData)
+                continue;
+
             let day;
             if (i === 1)
                 day = "Tomorrow";
             else {
-                const dateString = data.days[i].datetime;
-                const date = parseISO(dateString);
+                const date = parseISO(dayData.datetime);
                 day = format(date, "EEE");
             }
-            const tempMin = data.days[i].tempmin;
-            const tempMax = data.days[i].tempmax;
-            const icon = data.days[i].icon;
-            const condition = data.days[i].conditions;
-            const miniWeather = new MiniWeather(day, tempMin, tempMax, icon, condition);
 
+            const miniWeather = new MiniWeather(
+                day,
+                dayData.tempmin,
+                dayData.tempmax,
+                dayData.icon,
+                dayData.conditions
+            );
             weeklyForcast.push(miniWeather);
         }
     }
 
+    /** @returns {MiniWeather[]} copy of the weekly forecast array */
     function getWeeklyForcast() {
         return [...weeklyForcast];
     }
